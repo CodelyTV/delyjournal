@@ -1,17 +1,18 @@
 import {Drive} from "deta";
+import os from "os";
+import { NextRequest } from "next/server";
 
-export async function POST(request: Request) {
+export async function POST(request: NextRequest) {
   const images = Drive("images");
+  const image = (await request.formData()).get("image")
+  const file = await (image as File).arrayBuffer()
 
-  const blob = await request.blob();
-  const reader = blob.stream().getReader();
-  const buffers: Buffer[] = [];
-  for await (const chunk of readChunks(reader)) {
-    buffers.push(Buffer.from(chunk))
-  }
+  images.put("image.jpg", {data: Buffer.from(file)});
 
-  images.put("picture2.jpg", {data: Buffer.concat(buffers)});
+  return new Response('Hello, Next.js!')
+}
 
+export async function GET(request: Request) {
   return new Response('Hello, Next.js!')
 }
 

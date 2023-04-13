@@ -14,26 +14,16 @@ export default function Home() {
       const body = new FormData();
       body.append("image", i);
       
-      console.log(body);
-
-      // const response = await fetch("/api/images/upload", {
-      //   method: "POST",
-      //   body: body,
-      // });
-
       const response = await fetch("/api/images/upload", {
         method: "POST",
-        body: i,
-        headers: {
-          "Content-Type": "image/jpeg"
-        }
+        body: body,
       });
     }
   }
 
   return (
     <main>
-      <form onSubmit={handleSubmit}>
+      <form encType="multipart/form-data" onSubmit={handleSubmit}>
       <label htmlFor="file">Select file</label>
       <input 
         type="file"
